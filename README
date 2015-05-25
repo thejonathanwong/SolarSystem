@@ -1,0 +1,122 @@
+Jonathan Wong (jmw2245)
+Computer Graphics
+Final Project
+
+I originally proposed a physics-based animation of our solar system. In my
+proposal, I stated that I will be using Newton's law of gravition and solving
+the second order differential equation F = m * a''. I also stated that I would
+use a skybox for a background and use texture mapping to have the actual images
+of the planets.
+
+I was able to successfully implement a skybox of stars and a Runge-Kutta method
+of order 4 (found in SolarSystem.java) to solve the differential equation.
+
+In order to run my this animation enter the following commands from the main
+directory:
+
+$ ./run.sh
+
+
+I kept the main keyboard interactions found in the starter code of project 1.
+In addition to those, by pressing 'i', the camera will reset to the default
+position and 'n' will reset the solar system. 'o' will toggle the orbital lines
+
+Since this simulation of our solar system is based on the actual physical
+values, the distance and planet radius values have been scaled down such that
+they can all be shown on one screen zoomed out. However, some of the smaller
+planets, such as Mercury, may be hard to see. It may also be hard to find
+Neptune as not much light gets to it.
+
+
+
+
+//////////////////////////Runge-Kutta///////////////////////
+
+My implmentation of Runge-Kutta calculates both velocity and position at the
+next time step based on the current values.
+
+The basic algorithm is as follows:
+
+k1 = h * f(x0, t0)
+k2 = h * f(x0 + k1/2, t0 + h/2)
+k3 = h * f(x0 + k2/2, t0) + h/2
+k4 = h * f(x0 + k3, t0 + h)
+x1 = x0 + k1/6 + k2/3 + k3/3 + k4/6
+
+where h is the length of a single time step, x0 is the initial value, t0 is the
+current times step, and x1 is the approximated value of the next timestep. f is
+the function that calculates the value. In this case f will be the function
+that calculates the position/velocity at a given position/velocity and
+time.
+
+Each Planet object has a RigidBody member object that holds both the x, y, and
+z components of its position and velocity. Based on these values I calculate
+the next time-step's position and velocity as follows:
+
+k1v = h * a(x0, v0, t0)
+k1x = h * v0
+
+k2v = h * a(x0 + k1x/2, v0 + k1v/2, t0 + h/2)
+k2x = h * (v0 + k1v/2);
+
+k3v = h * a(x0 + k2x/2, v0 + k2v/2, t0 + h/2)
+k3x = h * (v0 + k2v/2);
+
+k4v = h * a(x0 + k3x, v0 + k3v, t0 + h)
+k4x = h * (v0 + k3v);
+
+v1 = v0 + k1v/6 + k2v/3 + k3v/3 + k4v/6
+x1 = x0 + k1x/6 + k2x/3 + k3x/3 + k4x/6
+
+where a() is a function that calculates the acceleration due to the position,
+velocity, and time. This function was determined by using Newton's Law of
+Gravitation as well as vector arithmetic.  I performed this calcuation for both
+x and z coordinates. 
+
+F_g = G * M * m / r^2
+a_g = G * M / r^2
+a_gx = a_g * cos(t)
+cos(t) = x / r
+
+a_gx = (G * M / r^2) * (x/r)
+     = G * M * x / r^3
+
+Similar math gets a_gz. This was calculated for each Planet at each time step.
+
+////////////////////////////////////////////////////////////
+
+
+///////////////////////////Skybox///////////////////////////
+
+The skybox was implemented by creating a cube around the rendering area and
+applying a texture to each quad. Each face as a different star field image
+which was loaded into a BufferedImage. This BufferedImage was then converted
+into a ByteBuffer which was then turned into a texture using glGenTextures().
+These textures were then applied to each quad using glBindTexture().
+
+////////////////////////////////////////////////////////////
+
+The end result of the project is an animation of the solar system with the
+planets undergoing uniform circular motion due solely to the sun's gravity.
+There is also a star field in the background that moves as the camera
+rotates and moves.
+
+Each of the celestial objects are drawn using my own Sphere class called
+PSphere. There is a light source within the star that illuminates the planets.
+The star itself emits yellow light, while the planets only reflect light.
+
+Unfortunately, a lot of time was spent figuring out how to apply Runge-Kutta to
+a second order differential equation, as well as tinkering with the physics. I
+spent roughly a week and a half reading up on Runge-Kutta
+(http://www.cs.cmu.edu/~baraff/sigcourse/notesb.pdf) and debugging my
+implmentation of it. It actually was not working correctly up until the due
+date of May 15. As such, the current simulation only shows uniform circular
+motion of the planets due only to the gravity of the sun. If given further
+time, it should be relatively simple to include the masses of the individual
+planets and calculate the total gravity felt by those combined masses for each
+planet. Also, I did not have time to add the textures to the planets.
+
+I was able to implement this animation by using
+http://www.cs.cmu.edu/~baraff/sigcourse/notesb.pdf to figure out Runge-Kutta,
+and http://www.java-gaming.org/index.php?topic=25516.0 for help with loading a
+image into a texture.
