@@ -1,9 +1,9 @@
-package SolarSystem;
-
-import org.lwjgl.opengl.GL11;
+package SolarSystem.Model;
 
 import java.util.Random;
+import org.lwjgl.opengl.GL11;
 
+import SolarSystem.View.PSphere;
 /**
  * Created by jonathan on 5/8/2015.
  */
@@ -13,7 +13,7 @@ public class Planet {
     public float radius; //actual value of planet's orbital radius
     public float dr; // display radius
 
-    private PSphere s; //actual sphere
+//    private PSphere s; //actual sphere
     private float[] colour; //colour of the planet
 
     //scales values to viewable sizes
@@ -28,8 +28,8 @@ public class Planet {
     }
 
     //constructor
-    public Planet(float radius, float x, float y, float z) {
-        this.rb = new RigidBody(x, y, z);
+    public Planet(float mass, float radius, float x, float y, float z) {
+        this.rb = new RigidBody(mass, x, y, z);
         this.radius = radius;
         this.dr = radius*radiusScale;
 

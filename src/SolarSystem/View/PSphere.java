@@ -1,4 +1,4 @@
-package SolarSystem;
+package SolarSystem.View;
 
 import org.lwjgl.opengl.GL11;
 

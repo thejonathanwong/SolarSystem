@@ -1,4 +1,4 @@
-package SolarSystem;
+package SolarSystem.Controller;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
 
+import SolarSystem.Model.SolarSystem;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.BufferUtils;

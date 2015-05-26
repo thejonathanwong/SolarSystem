@@ -1,4 +1,5 @@
-package SolarSystem;
+package SolarSystem.Model;
+
 
 
 /**
@@ -6,7 +7,7 @@ package SolarSystem;
  */
 public class RigidBody {
 
-//    public float mass;
+    public float mass;
 //    public Matrix3f IBody;
 //    public Matrix3f InvIBody;
 
@@ -25,8 +26,8 @@ public class RigidBody {
 //    public float tx, ty, tz;
 
 
-    public RigidBody(float x, float y, float z) {
-//        this.mass = mass;
+    public RigidBody(float mass, float x, float y, float z) {
+        this.mass = mass;
         this.x = x;
         this.y = y;
         this.z = z;
