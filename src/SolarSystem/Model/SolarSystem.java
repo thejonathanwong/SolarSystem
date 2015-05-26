@@ -27,7 +27,16 @@ public class SolarSystem {
     public void initSol() {
 
         //masses in kg
-        float sunM = (float) (1.989 * Math.pow(10,30));
+        float sunM = (float) (1.989e30);
+        float mercuryM = (float) (328.5e21);
+        float venusM = (float) (4.867e24);
+        float earthM = (float) (5.972e24);
+        float marsM = (float) (639e21);
+        float jupiterM = (float) (1.898e27);
+        float saturnM = (float) (568.3e24);
+        float uranusM = (float) (86.81e24);
+        float neptuneM = (float) (102.4e24);
+//        float plutoM = (float) (1.309e22);
 
 
         //radius of planet in metres
@@ -61,15 +70,15 @@ public class SolarSystem {
 
         //creates celestial objects
         Star sol = new Star(sunM, sunR);
-        Planet mercury = new Planet(mercuryR, mercuryP, 0, 0);
-        Planet venus = new Planet(venusR, venusP, 0, 0);
-        Planet earth = new Planet(earthR, earthP, 0, 0);
-        Planet mars = new Planet(marsR, marsP, 0, 0);
-        Planet jupiter = new Planet(jupiterR, jupiterP, 0, 0);
-        Planet saturn = new Planet(saturnR, saturnP, 0, 0);
-        Planet uranus = new Planet(uranusR, uranusP, 0, 0);
-        Planet neptune = new Planet(neptuneR, neptuneP, 0, 0);
-//        Planet pluto = new Planet(plutoR, plutoP, 0, 0);
+        Planet mercury = new Planet(mercuryM, mercuryR, mercuryP, 0, 0);
+        Planet venus = new Planet(venusM, venusR, venusP, 0, 0);
+        Planet earth = new Planet(earthM, earthR, earthP, 0, 0);
+        Planet mars = new Planet(marsM, marsR, marsP, 0, 0);
+        Planet jupiter = new Planet(jupiterM, jupiterR, jupiterP, 0, 0);
+        Planet saturn = new Planet(saturnM, saturnR, saturnP, 0, 0);
+        Planet uranus = new Planet(uranusM, uranusR, uranusP, 0, 0);
+        Planet neptune = new Planet(neptuneM, neptuneR, neptuneP, 0, 0);
+//        Planet pluto = new Planet(plutoM, plutoR, plutoP, 0, 0);
 
         star = sol;
 
@@ -103,76 +112,75 @@ public class SolarSystem {
         }
     }
 
-	//lighting the planets
-	private void plighting() {
-		float spec[] = new float[]{0.1f,0.1f,0.1f,1};
-		FloatBuffer mat_specular = BufferUtils.createFloatBuffer(4).put(spec);//FloatBuffer.wrap(spec);//.allocate(4).put(spec);
-		mat_specular.flip();
+//	//lighting the planets
+//	private void plighting() {
+//		float spec[] = new float[]{0.1f,0.1f,0.1f,1};
+//		FloatBuffer mat_specular = BufferUtils.createFloatBuffer(4).put(spec);//FloatBuffer.wrap(spec);//.allocate(4).put(spec);
+//		mat_specular.flip();
+//
+//		float mat_shininess = 10;
+//
+//		float em[] = {0.01f,0.01f,0.01f,1};
+//		FloatBuffer emission = BufferUtils.createFloatBuffer(4).put(em);
+//		emission.flip();
+//
+//		GL11.glMaterial(GL11.GL_FRONT, GL11.GL_EMISSION, emission);
+//		GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR, mat_specular);
+//		GL11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, mat_shininess);
+//
+//	}
+//
+//	//lighting for the sun
+//	//has star that emits light
+//	private void slighting() {
+//		//emit yellow
+//		float em[] = {0.8f,0.8f,0,1};
+//		FloatBuffer emission = BufferUtils.createFloatBuffer(4).put(em);
+//		emission.flip();
+//
+//		//position within the star
+//		float lp[] = {0,0,0,1};
+//		FloatBuffer light_position = BufferUtils.createFloatBuffer(4).put(lp);//FloatBuffer.wrap(lp);
+//		light_position.flip();
+//
+//		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, light_position);
+//		GL11.glMaterial(GL11.GL_FRONT, GL11.GL_EMISSION, emission);
+//
+//		GL11.glEnable(GL11.GL_DEPTH_TEST);
+//		GL11.glEnable(GL11.GL_LIGHTING);
+//		GL11.glEnable(GL11.GL_LIGHT0);
+//	}
 
-		float mat_shininess = 10;
-
-		float em[] = {0.01f,0.01f,0.01f,1};
-		FloatBuffer emission = BufferUtils.createFloatBuffer(4).put(em);
-		emission.flip();
-
-		GL11.glMaterial(GL11.GL_FRONT, GL11.GL_EMISSION, emission);
-		GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR, mat_specular);
-		GL11.glMaterialf(GL11.GL_FRONT, GL11.GL_SHININESS, mat_shininess);
-
-	}
-
-	//lighting for the sun
-	//has star that emits light
-	private void slighting() {
-		//emit yellow
-		float em[] = {0.8f,0.8f,0,1};
-		FloatBuffer emission = BufferUtils.createFloatBuffer(4).put(em);
-		emission.flip();
-
-		//position within the star
-		float lp[] = {0,0,0,1};
-		FloatBuffer light_position = BufferUtils.createFloatBuffer(4).put(lp);//FloatBuffer.wrap(lp);
-		light_position.flip();
-
-		GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, light_position);
-		GL11.glMaterial(GL11.GL_FRONT, GL11.GL_EMISSION, emission);
-
-		GL11.glEnable(GL11.GL_DEPTH_TEST);
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_LIGHT0);
-	}
-
-	//draws entire system
-    static float old = -1;
-	public void draw(float t) {
-		slighting();
-		star.s.draw();
-		plighting();
-		for(Planet p : planets) {
-            RigidBody rb = p.rb;
-
-            //calls runge-kutta method of order 4 to calc next step
-            rk(rb);
-//                p.printInfo();
-			p.draw();
-
-            //draw orbital rings
-            if(orbits) {
-                GL11.glPushMatrix();
-                GL11.glRotatef(90, 1, 0, 0);
-                GL11.glColor3f(1f, 1f, 1f);
-                Disk d = new Disk();
-                float scale = p.distanceScale;
-                float orbitRad = (float) Math.sqrt(rb.x * rb.x * scale * scale + rb.z * rb.z * scale * scale);
-                float thick = 0.005f;
-                if(p.dr < 0.01) {
-                    thick = 0.001f;
-                }
-                d.draw(orbitRad - thick, orbitRad, 100, 4);
-                GL11.glPopMatrix();
-            }
-		}
-	}
+//	//draws entire system
+//	public void draw(float t) {
+//		slighting();
+//		star.s.draw();
+//		plighting();
+//		for(Planet p : planets) {
+//            RigidBody rb = p.rb;
+//
+//            //calls runge-kutta method of order 4 to calc next step
+//            rk(rb);
+////                p.printInfo();
+//			p.draw();
+//
+//            //draw orbital rings
+//            if(orbits) {
+//                GL11.glPushMatrix();
+//                GL11.glRotatef(90, 1, 0, 0);
+//                GL11.glColor3f(1f, 1f, 1f);
+//                Disk d = new Disk();
+//                float scale = p.distanceScale;
+//                float orbitRad = (float) Math.sqrt(rb.x * rb.x * scale * scale + rb.z * rb.z * scale * scale);
+//                float thick = 0.005f;
+//                if(p.dr < 0.01) {
+//                    thick = 0.001f;
+//                }
+//                d.draw(orbitRad - thick, orbitRad, 100, 4);
+//                GL11.glPopMatrix();
+//            }
+//		}
+//	}
 
 
     // runge-kutta method of order 4
@@ -264,7 +272,7 @@ public class SolarSystem {
         return star.calcGrav(x,z) * p/r;
     }
 
-    public void toggleOrbits() {
-        orbits = !orbits;
-    }
+//    public void toggleOrbits() {
+//        orbits = !orbits;
+//    }
 }

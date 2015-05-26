@@ -1,5 +1,7 @@
 package SolarSystem.Model;
 
+import SolarSystem.View.PSphere;
+
 /**
  * Created by jonathan on 5/8/2015.
  */
@@ -9,7 +11,7 @@ public class Star {
     private float radius;
     private final float G = (float) (6.67384 * Math.pow(10, -11));
 
-    public SolarSystem.View.PSphere s;
+    public PSphere s;
     private float dr; //display radius
     private static final float radiusScale = (float) (0.2 * Math.pow(10,-9));
 
@@ -19,7 +21,7 @@ public class Star {
         mass = m;
         radius = r;
         dr = radius*radiusScale;
-        s = new SolarSystem.View.PSphere(dr);
+        s = new PSphere(dr);
     }
 
     //calculates acceleration due to the star at a given position

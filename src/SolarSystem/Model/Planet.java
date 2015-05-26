@@ -13,7 +13,7 @@ public class Planet {
     public float radius; //actual value of planet's orbital radius
     public float dr; // display radius
 
-//    private PSphere s; //actual sphere
+    private PSphere s; //actual sphere
     private float[] colour; //colour of the planet
 
     //scales values to viewable sizes
@@ -24,7 +24,7 @@ public class Planet {
         this.rb = rb;
         this.radius = radius;
         this.dr = radius*radiusScale;
-        s = new PSphere(this.dr);
+//        s = new PSphere(this.dr);
     }
 
     //constructor
